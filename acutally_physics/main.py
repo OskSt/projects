@@ -1,5 +1,6 @@
 import pygame
 from engine.body import Circle
+from engine.body import Rectangle
 from rendering.render import Render
 from engine.forces import Forces
 
@@ -18,6 +19,8 @@ circles = [
     Circle((100, 20), 5, (0, 0, 0), 2)
 ]
 
+
+
 running = True
 
 while running:
@@ -25,7 +28,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    screen.fill((30,30,30))
+    screen.fill((255, 255, 255))    
 
     dt = clock.tick(60) / 1000
 
@@ -40,12 +43,9 @@ while running:
             c.velocity += c.acceleration * dt
             c.pos += c.velocity * dt
 
-
         renderer.drawCircle(c)
-
 
     pygame.display.flip()
     clock.tick(60)
-
 
 pygame.quit()
