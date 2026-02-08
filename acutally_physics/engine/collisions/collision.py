@@ -40,6 +40,7 @@ class Collisions:
         if distance <= circle.radius:
 
             if distance == 0:
+                """ Manually decide the normal since divison by 0 does not work """
                 left = abs(circle.pos.x - rect.pos.x)
                 right = abs(circle.pos.x - (rect.pos.x + rect.width))
                 top = abs(circle.pos.y - rect.pos.y)
@@ -59,10 +60,10 @@ class Collisions:
             
             depth = circle.radius - distance
             circle.pos += normal * depth
-
             velocity_dot = circle.velocity.dot(normal)
 
             if velocity_dot < 0:
+                """ Bounce formula """
                 circle.velocity -= (1 + 0.8) * velocity_dot * normal
                 print(circle.velocity)
 
