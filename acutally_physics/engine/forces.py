@@ -1,7 +1,9 @@
 from pygame.math import Vector2
-from engine.body import Circle
 
 
 class Forces:
-    def applyGravity(circle, g=(0,500)):
-        circle.acceleration += Vector2(g)
+    def __init__(self, gravity=(0, 980)):
+        self.gravity = Vector2(gravity)
+
+    def applyGravity(self, obj):
+        obj.acceleration += self.gravity

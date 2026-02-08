@@ -3,6 +3,7 @@ from engine.body import Circle
 from engine.body import Rectangle
 from rendering.render import Render
 from engine.forces import Forces
+from engine.collisions.collision import Collisions
 
 
 pygame.init()
@@ -11,12 +12,14 @@ pygame.display.set_caption("PyGame Window")
 clock = pygame.time.Clock()
 
 renderer = Render(screen)
-forces = Forces
+forces = Forces()
+collisions = Collisions()
 
-circles = [
+objects = [
     Circle((200, 300), 20, (255, 0, 0), 5),
     Circle((400,300), 10, (0, 255, 255), 10),
-    Circle((100, 20), 5, (0, 0, 0), 2)
+    Circle((100, 20), 5, (0, 0, 0), 2),
+    Rectangle((0, 580), 800, 20, (0,0,0), 100)
 ]
 
 
@@ -32,18 +35,16 @@ while running:
 
     dt = clock.tick(60) / 1000
 
-    floor = 600
+    collisions.check(objects)
 
-    for c in circles:
-        if c.pos.y + c.radius >= floor:
-            c.velocity = (0,0)
-            c.pos.y = floor - c.radius
-        else: 
-            forces.applyGravity(c)
-            c.velocity += c.acceleration * dt
-            c.pos += c.velocity * dt
-
-        renderer.drawCircle(c)
+    for o in objects:
+        forces.applyGravity(o)     
+        if isinstance(o, Circle):
+            o.velocity += o.acceleration * dt
+            o.pos += o.velocity * dt 
+            renderer.drawCircle(o)
+        elif isinstance(o, Rectangle):
+            renderer.drawRectangle(o)
 
     pygame.display.flip()
     clock.tick(60)
