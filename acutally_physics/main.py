@@ -4,6 +4,8 @@ from engine.body import Rectangle
 from rendering.render import Render
 from engine.forces import Forces
 from engine.collisions.collision import Collisions
+from pygame import Vector2 
+
 
 
 pygame.init()
@@ -33,16 +35,20 @@ while running:
 
     dt = clock.tick(60) / 1000
 
-    collisions.check(objects)
 
     for o in objects:
-        forces.applyGravity(o)     
+        o.acceleration = Vector2(0,0)
+        forces.applyGravity(o)   
         if isinstance(o, Circle):
             o.velocity += o.acceleration * dt
             o.pos += o.velocity * dt 
+            print("Speed: ", o.velocity, "Acceleration: ", o.acceleration)
             renderer.drawCircle(o)
         elif isinstance(o, Rectangle):
             renderer.drawRectangle(o)
+
+    collisions.check(objects)
+
 
     pygame.display.flip()
     clock.tick(60)

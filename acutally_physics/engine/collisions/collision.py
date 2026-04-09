@@ -17,10 +17,8 @@ class Collisions:
                     self.circleRectangleCollision(obj1, obj2)
 
     def circleCircleCollision(self, obj1, obj2):
-        # Check collison 
         distance = math.sqrt(math.pow((obj1.pos.x - obj2.pos.x), 2) + math.pow((obj1.pos.y - obj2.pos.y), 2))
         if  distance <= obj1.radius + obj2.radius:
-            # do collision
             return True
         return False
 
@@ -63,7 +61,8 @@ class Collisions:
             velocity_dot = circle.velocity.dot(normal)
 
             if velocity_dot < 0:
-                """ Bounce formula """
                 circle.velocity -= (1 + 0.8) * velocity_dot * normal
-                print(circle.velocity)
+                if abs(circle.velocity.y) < 15: #treat small velocities as 0
+                    circle.velocity.y = 0
+            print("Y speed: ", circle.velocity.y)
 
