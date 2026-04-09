@@ -18,11 +18,15 @@ forces = Forces()
 collisions = Collisions()
 
 objects = [
-    Circle((200, 300), 20, (255, 0, 0), 5),
-    Rectangle((0, 580), 800, 20, (0,0,0), 100)
+    # pos, radius, color, mass, velocity, acceleration, movable 
+    Circle((200, 300), 20, (255, 0, 0), 5, (1000,1000), (0,0), True),
+
+    # pos, width, height, color, mass, velocity, acceleration, movable
+    Rectangle((0, 580), 800, 20, (0,0,0), 100, (0,0), (0,0), False),
+    Rectangle((0, 0), 800, 20, (0,0,0), 100, (0,0), (0,0), False),
+    Rectangle((0, 0), 20, 600, (0,0,0), 100, (0,0), (0,0), False),
+    Rectangle((780, 0), 20, 600, (0,0,0), 100, (0,0), (0,0), False),
 ]
-
-
 
 running = True
 
@@ -32,16 +36,19 @@ while running:
             running = False
 
     screen.fill((255, 255, 255))    
-
+    
     dt = clock.tick(60) / 1000
-
 
     for o in objects:
         o.acceleration = Vector2(0,0)
         forces.applyGravity(o)   
+
+        if o.movable:
+            o.update(dt)
+
         if isinstance(o, Circle):
-            o.velocity += o.acceleration * dt
-            o.pos += o.velocity * dt 
+            """o.velocity += o.acceleration * dt
+            o.pos += o.velocity * dt """
             print("Speed: ", o.velocity, "Acceleration: ", o.acceleration)
             renderer.drawCircle(o)
         elif isinstance(o, Rectangle):

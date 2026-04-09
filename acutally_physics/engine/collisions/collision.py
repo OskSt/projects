@@ -64,5 +64,5 @@ class Collisions:
                 circle.velocity -= (1 + 0.8) * velocity_dot * normal
                 if abs(circle.velocity.y) < 15: #treat small velocities as 0
                     circle.velocity.y = 0
-            print("Y speed: ", circle.velocity.y)
+            print("Y speed: ", circle.velocity)
 
