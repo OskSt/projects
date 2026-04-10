@@ -19,7 +19,10 @@ collisions = Collisions()
 
 objects = [
     # pos, radius, color, mass, velocity, acceleration, movable 
-    Circle((200, 300), 20, (255, 0, 0), 5, (1000,1000), (0,0), True),
+    Circle((200, 300), 20, (255, 0, 0), 5, (500, 500), (0,0), True),
+    Circle((500, 300), 20, (0, 0, 255), 5, (-500, -500), (0, 0), True),
+    Circle((450, 200), 20, (0, 255, 0), 5, (500, -500), (0, 0), True),
+    Circle((300, 300), 20, (0, 0, 0), 5, (-500, 500), (0, 0), True),
 
     # pos, width, height, color, mass, velocity, acceleration, movable
     Rectangle((0, 580), 800, 20, (0,0,0), 100, (0,0), (0,0), False),
@@ -35,9 +38,11 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    screen.fill((255, 255, 255))    
+    screen.fill((255, 255, 255))
     
     dt = clock.tick(60) / 1000
+
+    collisions.check(objects)
 
     for o in objects:
         o.acceleration = Vector2(0,0)
@@ -53,8 +58,6 @@ while running:
             renderer.drawCircle(o)
         elif isinstance(o, Rectangle):
             renderer.drawRectangle(o)
-
-    collisions.check(objects)
 
 
     pygame.display.flip()

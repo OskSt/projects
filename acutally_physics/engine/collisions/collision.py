@@ -12,15 +12,38 @@ class Collisions:
                 obj2 = objects[j]
 
                 if isinstance(obj1, Circle) and isinstance(obj2, Circle):
-                    self.circleCircleCollision(obj1, obj2)
+                    self.CircleCircleCollision(obj1, obj2)
                 elif isinstance(obj1, Circle) and isinstance(obj2, Rectangle):
                     self.circleRectangleCollision(obj1, obj2)
 
-    def circleCircleCollision(self, obj1, obj2):
-        distance = math.sqrt(math.pow((obj1.pos.x - obj2.pos.x), 2) + math.pow((obj1.pos.y - obj2.pos.y), 2))
-        if  distance <= obj1.radius + obj2.radius:
-            return True
-        return False
+    def CircleCircleCollision(self, circle1, circle2):
+        diff_x = circle1.pos.x - circle2.pos.x
+        diff_y = circle1.pos.y - circle2.pos.y
+
+        distance = math.sqrt(math.pow(diff_x, 2) + math.pow(diff_y, 2))
+        radius_sum = circle1.radius + circle2.radius
+
+        if distance < radius_sum:
+            if distance == 0:
+                normal = Vector2(1, 0)
+            else:
+                normal = Vector2(diff_x, diff_y) / distance
+
+            depth = radius_sum - distance
+            circle1.pos += normal * depth / 2
+            circle2.pos -= normal * depth / 2
+
+            relative_velocity = circle1.velocity - circle2.velocity
+
+            velocity_dot = relative_velocity.dot(normal)
+
+            if velocity_dot > 0:
+                return
+
+            circle1.velocity += -(1 + 0.8) * velocity_dot * normal * 0.5
+            circle2.velocity -= -(1 + 0.8) * velocity_dot * normal * 0.5
+
+            
 
     def circleRectangleCollision(self, circle, rect):
         """ Check the distance between circle center and closest point on rectabngle"""
